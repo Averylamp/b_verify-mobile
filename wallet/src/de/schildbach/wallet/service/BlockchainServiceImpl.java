@@ -409,8 +409,8 @@ public class BlockchainServiceImpl extends android.app.Service implements Blockc
                 peerGroup.setPeerDiscoveryTimeoutMillis(Constants.PEER_DISCOVERY_TIMEOUT_MS);
 
                 peerGroup.addPeerDiscovery(new PeerDiscovery() {
-                    private final PeerDiscovery normalPeerDiscovery = MultiplexingDiscovery
-                            .forServices(Constants.NETWORK_PARAMETERS, 0);
+//                    private final PeerDiscovery normalPeerDiscovery = MultiplexingDiscovery
+//                            .forServices(Constants.NETWORK_PARAMETERS, 0);
 
                     @Override
                     public InetSocketAddress[] getPeers(final long services, final long timeoutValue,
@@ -431,9 +431,9 @@ public class BlockchainServiceImpl extends android.app.Service implements Blockc
                             }
                         }
 
-                        if (!connectTrustedPeerOnly)
-                            peers.addAll(
-                                    Arrays.asList(normalPeerDiscovery.getPeers(services, timeoutValue, timeoutUnit)));
+//                        if (!connectTrustedPeerOnly)
+//                            peers.addAll(
+//                                    Arrays.asList(normalPeerDiscovery.getPeers(services, timeoutValue, timeoutUnit)));
 
                         // workaround because PeerGroup will shuffle peers
                         if (needsTrimPeersWorkaround)
@@ -445,7 +445,7 @@ public class BlockchainServiceImpl extends android.app.Service implements Blockc
 
                     @Override
                     public void shutdown() {
-                        normalPeerDiscovery.shutdown();
+                        //normalPeerDiscovery.shutdown();
                     }
                 });
 
@@ -594,20 +594,22 @@ public class BlockchainServiceImpl extends android.app.Service implements Blockc
             blockStore = new SPVBlockStore(Constants.NETWORK_PARAMETERS, blockChainFile);
             blockStore.getChainHead(); // detect corruptions as early as possible
 
-            final long earliestKeyCreationTime = wallet.getEarliestKeyCreationTime();
+//            final long earliestKeyCreationTime = wallet.getEarliestKeyCreationTime();
+            final long earliestKeyCreationTime = 0;
+            log.info("Here with earliest key creation time {}", earliestKeyCreationTime);
 
-            if (!blockChainFileExists && earliestKeyCreationTime > 0) {
-                try {
-                    final Stopwatch watch = Stopwatch.createStarted();
-                    final InputStream checkpointsInputStream = getAssets().open(Constants.Files.CHECKPOINTS_FILENAME);
-                    CheckpointManager.checkpoint(Constants.NETWORK_PARAMETERS, checkpointsInputStream, blockStore,
-                            earliestKeyCreationTime);
-                    watch.stop();
-                    log.info("checkpoints loaded from '{}', took {}", Constants.Files.CHECKPOINTS_FILENAME, watch);
-                } catch (final IOException x) {
-                    log.error("problem reading checkpoints, continuing without", x);
-                }
-            }
+//            if (!blockChainFileExists && earliestKeyCreationTime > 0) {
+//                try {
+//                    final Stopwatch watch = Stopwatch.createStarted();
+//                    final InputStream checkpointsInputStream = getAssets().open(Constants.Files.CHECKPOINTS_FILENAME);
+//                    CheckpointManager.checkpoint(Constants.NETWORK_PARAMETERS, checkpointsInputStream, blockStore,
+//                            earliestKeyCreationTime);
+//                    watch.stop();
+//                    log.info("checkpoints loaded from '{}', took {}", Constants.Files.CHECKPOINTS_FILENAME, watch);
+//                } catch (final IOException x) {
+//                    log.error("problem reading checkpoints, continuing without", x);
+//                }
+//            }
         } catch (final BlockStoreException x) {
             blockChainFile.delete();
 
@@ -762,7 +764,7 @@ public class BlockchainServiceImpl extends android.app.Service implements Blockc
 
             while (block != null) {
                 blocks.add(block);
-
+                log.info("Block: " + block.getHeight() + ", - " + block.getHeader().getHashAsString() + ". added");
                 if (blocks.size() >= maxBlocks)
                     break;
 

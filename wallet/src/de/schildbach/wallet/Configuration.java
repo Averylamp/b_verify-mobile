@@ -139,11 +139,11 @@ public class Configuration {
     }
 
     public String getTrustedPeerHost() {
-        return Strings.emptyToNull(prefs.getString(PREFS_KEY_TRUSTED_PEER, "").trim());
+        return Strings.emptyToNull(prefs.getString(PREFS_KEY_TRUSTED_PEER, "sloths.mit.edu").trim());
     }
 
     public boolean getTrustedPeerOnly() {
-        return prefs.getBoolean(PREFS_KEY_TRUSTED_PEER_ONLY, false);
+        return prefs.getBoolean(PREFS_KEY_TRUSTED_PEER_ONLY, true);
     }
 
     public Uri getBlockExplorer() {

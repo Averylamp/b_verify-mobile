@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import org.bitcoinj.core.Context;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.params.MainNetParams;
+import org.bitcoinj.params.RegTestParams;
 import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.utils.MonetaryFormat;
 import org.slf4j.Logger;
@@ -45,8 +46,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public final class Constants {
     public static final boolean TEST = R.class.getPackage().getName().contains("_test");
 
-    /** Network this wallet is on (e.g. testnet or mainnet). */
-    public static final NetworkParameters NETWORK_PARAMETERS = TEST ? TestNet3Params.get() : MainNetParams.get();
+    ///** Network this wallet is on (e.g. testnet or mainnet). */
+    //public static final NetworkParameters NETWORK_PARAMETERS = TEST ? TestNet3Params.get() : MainNetParams.get();
+    public static final NetworkParameters NETWORK_PARAMETERS = RegTestParams.get();
 
     /** Bitcoinj global context. */
     public static final Context CONTEXT = new Context(NETWORK_PARAMETERS);
